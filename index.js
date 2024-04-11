@@ -37,4 +37,6 @@ app.use((err, req, res, next) => {
     next();
 });
 
-app.listen(PORT, () => console.log(`Server started at PORT: ${PORT}`))
+const server = app.listen(PORT, () => console.log(`Server started at PORT: ${PORT}`));
+server.keepAliveTimeout = 30000
+server.headersTimeout = 31000
