@@ -5,21 +5,12 @@ const fetchWeather = require("../utils/FetchWeather");
 const router = express.Router();
 
 router.post("/weather", async (req, res) => {
-  const body = req.body;
-
-  if(!body || !(body.lat !== undefined && body.long !== undefined && body.timezone !== undefined)) {
-    return res.status(400).json({ error: "BAD_REQUEST" });
-  }
-
   const clientIp = req.clientIp;
   const clientDetail = geoip.lookup(clientIp);
   
-  const lat = clientDetail.ll[0];
-  const long = clientDetail.ll[1];
-  const timezone = clientDetail.timezone;
-  
-  console.log(clientIp);
-  console.log(clientDetail);
+  const lat = clientDetail == null ? 53.0 : clientDetail.ll[0];
+  const long = clientDetail == null ? 0.1 : clientDetail.ll[1];
+  const timezone = clientDetail == null ? "GMT" : clientDetail.timezone;
   
   const result = await fetchWeather(lat, long, timezone);
 
