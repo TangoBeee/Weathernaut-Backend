@@ -1,6 +1,7 @@
 const express = require("express");
 const dotenv = require("dotenv");
 const cors = require("cors");
+const requestIp = require('request-ip');
 
 const weatherRoute = require("./routes/Weather.route");
 const musicRoute = require("./routes/Music.route");
@@ -13,6 +14,7 @@ const PORT = process.env.PORT || 3000;
 
 app.use(cors());
 app.use(express.json());
+app.use(requestIp.mw())
 
 // Main Endpoints
 app.use("/api/health", (req, res) => {

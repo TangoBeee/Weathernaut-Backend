@@ -11,12 +11,17 @@ router.post("/weather", async (req, res) => {
     return res.status(400).json({ error: "BAD_REQUEST" });
   }
 
-  const clientIp = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
+  const clientIp = req.clientIp;
   const clientDetail = geoip.lookup(clientIp);
+  
+  const lat = clientDetail.ll[0];
+  const long = clientDetail.ll[1];
+  const timezone = clientDetail.timezone;
+  
   console.log(clientIp);
   console.log(clientDetail);
   
-  const result = await fetchWeather(clientDetail.ll[0], clientDetail.ll[1], body.timezone);
+  const result = await fetchWeather(lat, long, timezone);
 
   if(result.error) {
     return res.status(500).json({ error: result.error });
