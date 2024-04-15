@@ -1,4 +1,4 @@
-const axios = require("axios");
+const fetchData = require("./FetchData");
 
 const BASE_URL = "https://api.open-meteo.com/v1/forecast";
 
@@ -32,20 +32,6 @@ const fetchWeather = async (lat, long, timezone) => {
     return weatherData;
   } catch (error) {
     return { error: error.message };
-  }
-};
-
-const fetchData = async (apiUrl) => {
-  try {
-    const response = await axios.get(apiUrl).catch((error) => {
-      console.error(error)
-      throw new Error(`Failed to fetch data from ${apiUrl}: ${error}`);
-    });
-    
-    return response.data;
-  } catch(error) {
-    console.error(error)
-    throw new Error(`Failed to fetch data from ${apiUrl}: ${error.message}`);
   }
 };
 

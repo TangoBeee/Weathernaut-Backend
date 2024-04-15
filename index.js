@@ -5,6 +5,7 @@ const requestIp = require('request-ip');
 
 const weatherRoute = require("./routes/Weather.route");
 const musicRoute = require("./routes/Music.route");
+const geocodingRoute = require("./routes/Geocoding.route");
 
 // For ENV use
 dotenv.config();
@@ -23,6 +24,7 @@ app.use("/api/health", (req, res) => {
 });
 app.use("/api", weatherRoute);
 app.use("/api", musicRoute);
+app.use("/api", geocodingRoute);
 
 // 404 Endpoint
 app.get("*", (req, res) => {
