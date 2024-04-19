@@ -1,8 +1,13 @@
+const isoCountryCodes = require("../assets/data/iso-country-codes.json");
 const fetchData = require("./FetchData");
 
 const BASE_URL = "https://api.open-meteo.com/v1/forecast";
 
-const fetchWeather = async (lat, long, timezone) => {
+const fetchWeather = async (clientDetail) => {
+  const lat = clientDetail == null ? 53.0 : clientDetail.ll[0];
+  const long = clientDetail == null ? 0.1 : clientDetail.ll[1];
+  const timezone = clientDetail == null ? "GMT" : clientDetail.timezone;
+
   const BASE_API_PATH = `${BASE_URL}?latitude=${lat}&longitude=${long}&timezone=${timezone}`;
   
   try {
@@ -15,6 +20,8 @@ const fetchWeather = async (lat, long, timezone) => {
     const dailyWeatherData = await fetchData(dailyWeatherApi);
 
     const weatherData = {
+      "city": (clientDetail.city || "{ERROR}"),
+      "country": (isoCountryCodes[clientDetail.country] || clientDetail.country || "{ERROR}"),
       "current_weather": {
         "current_units": currentWeatherData.current_units,
         "current": currentWeatherData.current,
