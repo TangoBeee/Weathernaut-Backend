@@ -4,9 +4,26 @@ const fetchData = require("./FetchData");
 const BASE_URL = "https://api.open-meteo.com/v1/forecast";
 
 const fetchWeather = async (clientDetail) => {
-  const lat = clientDetail == null ? 53.0 : clientDetail.ll[0];
-  const long = clientDetail == null ? 0.1 : clientDetail.ll[1];
-  const timezone = clientDetail == null ? "GMT" : clientDetail.timezone;
+  
+  let lat;
+  let long;
+  let timezone;
+  let city;
+  let country;
+
+  if(clientDetail == null) {
+    lat = 51.507351;
+    long = -0.127758;
+    timezone = "GMT";
+    city = "London";
+    country = "United Kingdom";
+  } else {
+    lat = clientDetail.ll[0];
+    long = clientDetail.ll[1];
+    timezone = clientDetail.timezone;
+    city = clientDetail.city
+    country = (isoCountryCodes[clientDetail.country] || clientDetail.country)
+  }
 
   const BASE_API_PATH = `${BASE_URL}?latitude=${lat}&longitude=${long}&timezone=${timezone}`;
   
@@ -20,8 +37,8 @@ const fetchWeather = async (clientDetail) => {
     const dailyWeatherData = await fetchData(dailyWeatherApi);
 
     const weatherData = {
-      "city": (clientDetail.city || "{ERROR}"),
-      "country": (isoCountryCodes[clientDetail.country] || clientDetail.country || "{ERROR}"),
+      "city": city,
+      "country": country,
       "current_weather": {
         "current_units": currentWeatherData.current_units,
         "current": currentWeatherData.current,
