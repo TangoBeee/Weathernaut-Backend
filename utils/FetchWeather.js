@@ -39,6 +39,8 @@ const fetchWeather = async (clientDetail) => {
     const weatherData = {
       "city": city,
       "country": country,
+      "lat": lat,
+      "long": long,
       "current_weather": {
         "current_units": currentWeatherData.current_units,
         "current": currentWeatherData.current,
