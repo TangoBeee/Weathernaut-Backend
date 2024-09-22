@@ -6,7 +6,18 @@ const router = express.Router();
 
 router.post("/weather", async (req, res) => {
   const clientIp = req.clientIp;
-  const clientDetail = geoip.lookup(clientIp);
+  let clientDetail = geoip.lookup(clientIp);
+  const body = req.body
+  
+  if(body.ll && body.city && body.country && body.timezone) {
+    clientDetail = {
+      ll: body.ll,
+      city: body.city,
+      country: body.country,
+      timezone: body.timezone
+    }
+  }
+  
   
   const result = await fetchWeather(clientDetail);
 
